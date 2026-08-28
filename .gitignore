@@ -1,1 +1,7 @@
+# Arquivos
+package-lock.json
+
+# Pastas Configurações
 .vscode/
+dist/
+node_modules/
