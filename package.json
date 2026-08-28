@@ -1,0 +1,20 @@
+{
+  "name": "virtual-journaling",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/AmoraOD/virtual-journaling#readme",
+  "bugs": {
+    "url": "https://github.com/AmoraOD/virtual-journaling/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmoraOD/virtual-journaling.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
