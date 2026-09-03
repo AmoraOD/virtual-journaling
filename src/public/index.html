@@ -5,15 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Virtual Journaling</title>
 </head>
+
 <body class="principal-bg">
     <main>
         <h4>My Journal</h4>
-        <div data-id="container-book">
+        
+        <section id="container-journal">
+            <div id="journal-cover">
+                <div id="inside-pages"></div>
+                <div id="journal-cover-container"></div>
+            </div>
 
-        </div>
+            <div id="journal-pages" class="hidden">
+                <div class="page"></div>
+            </div>
+        </section>
+
     </main>
 
     <link rel="stylesheet" href="/src/assets/styles.css">
     <script src="/dist/index.js"></script>
 </body>
+
 </html>
