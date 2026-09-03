@@ -1,1 +1,68 @@
-.principal-bg{ background-color: #5c2b1c; }
+/* .principal-bg{ background-color: #5c2b1c; } */
+.principal-bg{
+    background-color: #5c2b1c91;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container-journal{
+    width: 600px; height: 400px;
+    perspective: 1000px;
+    position: relative;
+}
+
+#journal-cover{
+    display: flex;
+    top: 0; left: 0;
+    z-index: 10;
+    align-items: center; justify-content: center;
+    width: 100%; height: 100%;
+    background: linear-gradient(145deg, #899bc2, #5b7fb6);
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(64, 34, 88, 0.5);
+    cursor: pointer;
+    transition: transform 0.8s ease; transform-style: preserve-3d;
+    position: absolute;
+}
+
+#journal-cover.opened{
+    transform: rotateY(-180deg);
+    pointer-events: none;
+}
+
+#journal-cover-content{
+    text-align: center;
+    padding: 20px;
+    backface-visibility: hidden;
+}
+
+#inside-pages{
+    position: absolute;
+    right: 0; top: 0;
+    width: 20px; height: 100%;
+    background: repeating-linear-gradient(
+        45deg,
+        #F5DEB3,
+        #F5DEB3 10px,
+        #E8D5A3 10px,
+        #E8D5A3 20px
+    );
+    border-radius: 0 8px 8px 0;
+    z-index: -1;
+}
+
+/* GLOBAL CLASSES */
+.hidden{
+    opacity: 0;
+    pointer-events: none;
+}
+
+.page{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
