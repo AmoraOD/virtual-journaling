@@ -21,13 +21,33 @@ class VirtualJournal{
         this.Start();
     }
 
-    private Start(): void{
+    private Start(): void {
         this.cover.addEventListener('click', () => this.openJournal());
 
         this.backButton.addEventListener('click', () => this.closeJournal());
     }
 
-    private openJournal(): void{}
+    private openJournal(): void {
+        if (this.state.isOpen) return;
+        this.state.isOpen = true;
+        this.cover.classList.add('opened');
 
-    private closeJournal(): void{}
+        setTimeout(() => {
+            this.pages.classList.remove('hidden');
+        }, 400);
+    }
+
+    private closeJournal(): void {
+        if (!this.state.isOpen) return;
+        this.state.isOpen = false;
+        this.pages.classList.add('hidden');
+
+        setTimeout(() => {
+            this.cover.classList.remove('opened');
+        }, 500);
+    }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    new VirtualJournal();
+});
