@@ -24,6 +24,7 @@ class VirtualJournal{
     private Start(): void {
         this.cover.addEventListener('click', () => this.openJournal());
 
+        this.backButton.classList.add('hidden');
         this.backButton.addEventListener('click', () => this.closeJournal());
     }
 
@@ -34,6 +35,7 @@ class VirtualJournal{
 
         setTimeout(() => {
             this.pages.classList.remove('hidden');
+            this.backButton.classList.remove('hidden');
         }, 400);
     }
 
@@ -44,6 +46,7 @@ class VirtualJournal{
 
         setTimeout(() => {
             this.cover.classList.remove('opened');
+            this.backButton.classList.add('hidden');
         }, 500);
     }
 }

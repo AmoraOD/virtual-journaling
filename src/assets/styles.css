@@ -1,3 +1,8 @@
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 /* .principal-bg{ background-color: #5c2b1c; } */
 .principal-bg{
     background-color: #f5e7d6;
@@ -15,21 +20,52 @@
     position: relative;
 }
 
+/* BUTTONS */
+#back-to-cover{
+    padding: 8px 16px;
+    background: #3f5fc7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#back-to-cover:hover { background: #2c4db9; }
+
+/* GLOBAL CLASSES AND ID*/
+.hidden{
+    opacity: 0;
+    pointer-events: none;
+}
+
+.page{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.round-right-side{
+    border-top-right-radius: 4rem;
+    border-bottom-right-radius: 4rem;
+}
+
+/* JOURNAL ID AND CLASSES */
+
 #journal-cover{
     display: flex;
-    top: 0; left: 0;
-    z-index: 10;
     align-items: center; justify-content: center;
+    z-index: 10;
     width: 100%; height: 100%;
     background: linear-gradient(180deg, #b6bfd3, #91a1b9);
     box-shadow: 0 10px 30px rgba(64, 34, 88, 0.5);
     cursor: pointer;
-    transition: transform 0.8s ease; transform-style: preserve-3d;
+    transition: transform 0.8s ease; 
+    transform-style: preserve-3d; transform-origin: left center;
     position: absolute;
 }
 
 #journal-cover.opened{
-    transform: rotateY(-180deg);
+    transform: rotateY(-160deg);
     pointer-events: none;
 }
 
@@ -61,39 +97,29 @@
     top: 0; left: 0;
     padding: 20px;
     box-sizing: border-box; overflow-y: auto;
-    transition: opacity 0.5s ease; z-index: 5;
+    transition: transform 0.8s ease, opacity 0.5s ease;
+    transform: rotateY(-10deg) translateX(-20px);; 
+    transform-origin: left center;
+    z-index: 15;
+}
+
+#journal-pages::before {
+  content: '';
+  position: absolute;
+  left: -15px;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  background: radial-gradient(circle at 50% 20%, #888 3px, transparent 4px) repeat-y;
+  background-size: 30px 40px;
+}
+
+#journal-pages.hidden{
+    opacity: 0;
+    transform: rotateY(0deg) translateX(0);
 }
 
 .page-navigation{
     margin: 1rem;
     padding: 0.5rem;
-}
-
-/* BUTTONS */
-#back-to-cover{
-    padding: 8px 16px;
-    background: #3f5fc7;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#back-to-cover:hover { background: #2c4db9; }
-
-/* GLOBAL CLASSES AND ID*/
-.hidden{
-    opacity: 0;
-    pointer-events: none;
-}
-
-.page{
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.round-right-side{
-    border-top-right-radius: 4rem;
-    border-bottom-right-radius: 4rem;
 }
