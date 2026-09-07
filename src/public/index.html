@@ -12,6 +12,13 @@
 
         <section class="page-navigation">
             <button id="back-to-cover" class="hidden">⬅️ Back to Cover</button>
+
+            <div class="pages-nav-inner">
+                <button id="prev-page" class="btn">⏪</button>
+                <span id="indicator">1</span>
+                <button id="next-page" class="btn">⏩</button>
+                <button id="add-page" class="btn">➕ New Page</button>
+            </div>
         </section>
 
         <section class="container-journal">
@@ -23,7 +30,10 @@
             </div>
 
             <div id="journal-pages" class="hidden">
-                <div class="page">
+                <!-- <div class="page">
+                    <div class="page-content" contenteditable="true"></div>
+                </div> -->
+                <div id="page-container">
                     <div class="page-content" contenteditable="true"></div>
                 </div>
             </div>
