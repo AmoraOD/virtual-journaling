@@ -46,6 +46,7 @@ class VirtualJournal{
         this.addPageButton.addEventListener('click', () => this.addPage());
 
         this.backButton.classList.add('hidden');
+        this.pages.classList.add('hidden');
 
         this.addPage(false);
         this.showPage(0);
@@ -56,21 +57,25 @@ class VirtualJournal{
         this.state.isOpen = true;
         this.cover.classList.add('opened');
 
-        setTimeout(() => {
-            this.pages.classList.remove('hidden');
-            this.backButton.classList.remove('hidden');
-        }, 400);
+        this.pages.classList.remove('hidden');
+        this.backButton.classList.remove('hidden');
     }
 
     private closeJournal(): void {
         if (!this.state.isOpen) return;
         this.state.isOpen = false;
-        this.pages.classList.add('hidden');
 
-        setTimeout(() => {
-            this.cover.classList.remove('opened');
-            this.backButton.classList.add('hidden');
-        }, 500);
+        this.cover.classList.remove('opened');
+        this.backButton.classList.add('hidden');
+
+        const handleCoverClose = (event : TransitionEvent) => {
+            if (event.propertyName !== 'transform') return;
+
+            this.cover.removeEventListener('transitionend', handleCoverClose);
+            this.pages.classList.add('hidden');
+        };
+
+        this.cover.addEventListener('transitionend', handleCoverClose);
     }
 
     private createPageElement(): HTMLElement {
@@ -98,7 +103,7 @@ class VirtualJournal{
         this.state.currentPage = index;
 
         this.pagesElements.forEach((page, i) => {
-            page.style.display = (1 === index) ? 'flex' : 'none';
+            page.style.display = (i === index) ? 'flex' : 'none';
         });
 
         this.pageIndicator.textContent = `${index + 1}`;
