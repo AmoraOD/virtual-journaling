@@ -17,6 +17,10 @@ class VirtualJournal{
     private state: journal_state;
     private pagesElements: HTMLElement[] = [];
 
+    private changeColorButton: HTMLElement;
+    private colorOptions: HTMLElement;
+    private coverText: HTMLElement;
+
     constructor() {
         this.cover      = document.getElementById("journal-cover")!;
         this.pages      = document.getElementById("journal-pages")!;
@@ -28,6 +32,10 @@ class VirtualJournal{
 
         this.addPageButton = document.getElementById("add-page")!;
         this.pageIndicator = document.getElementById("indicator")!;
+
+        this.changeColorButton = document.getElementById("change-color")!;
+        this.colorOptions      = document.getElementById("color-options")!;
+        this.coverText         = document.querySelector(".cover-text") as HTMLElement;
 
         this.state  = {
             isOpen: false,
@@ -48,8 +56,11 @@ class VirtualJournal{
         this.backButton.classList.add('hidden');
         this.pages.classList.add('hidden');
 
+        this.changeColorButton.addEventListener('click', () => this.toggleColorOptions());
+
         this.addPage(false);
         this.showPage(0);
+        this.buildColorOptions();
     }
 
     private openJournal(): void {
@@ -119,6 +130,69 @@ class VirtualJournal{
         if (this.state.currentPage > 0) {
             this.showPage(this.state.currentPage - 1);
         }
+    }
+
+    private readonly coverColors: string[] = [
+        '#b6bfd3', // azul (padrão)
+        '#c9a0a0', // vinho
+        '#a8c4a2', // verde sálvia
+        '#b9a7d1', // lavanda
+        '#e0cba8', // bege
+        '#d1a79e', // terracota
+        '#8d8d8d', // cinza
+    ];
+
+    private buildColorOptions(): void {
+    this.coverColors.forEach((color) => {
+        const swatch = document.createElement('button');
+        swatch.className = 'swatch';
+        swatch.style.backgroundColor = color;
+        swatch.setAttribute('aria-label', `Cor ${color}`);
+        swatch.addEventListener('click', (e) => {
+            e.stopPropagation(); // evita propagar pra outros listeners
+            this.applyCoverColor(color);
+            this.colorOptions.classList.add('hidden');
+        });
+        this.colorOptions.appendChild(swatch);
+    });
+}
+
+    private toggleColorOptions(): void {
+        this.colorOptions.classList.toggle('hidden');
+    }
+
+    private applyCoverColor(hex: string): void {
+        // Tom mais claro para o topo do gradiente
+        const lighter = this.shade(hex, 0.15);
+        // Tom mais escuro para o texto
+        const darker = this.shade(hex, -0.45);
+
+        this.cover.style.setProperty('--cover-light', lighter);
+        this.cover.style.setProperty('--cover-dark', hex);
+        this.cover.style.setProperty('--cover-text', darker);
+    }
+
+    /**
+     * Clareia (percent > 0) ou escurece (percent < 0) uma cor hex.
+     * @param hex  Cor no formato "#rrggbb"
+     * @param percent  Ex.: -0.4 = 40% mais escuro; 0.15 = 15% mais claro
+     */
+    private shade(hex: string, percent: number): string {
+        const n = parseInt(hex.replace('#', ''), 16);
+
+        const adjust = (channel: number): number => {
+            // Se percent < 0, escurece multiplicando; se > 0, clareia em direção a 255.
+            const v = Math.round(
+                channel + (percent < 0 ? channel * percent : (255 - channel) * percent)
+            );
+            return Math.max(0, Math.min(255, v));
+        };
+
+        const r = adjust((n >> 16) & 0xff);
+        const g = adjust((n >> 8) & 0xff);
+        const b = adjust(n & 0xff);
+
+        return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
     }
 }
 
