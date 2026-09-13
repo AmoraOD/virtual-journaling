@@ -136,12 +136,12 @@ class VirtualJournal{
 
     private readonly coverColors: string[] = [
         '#b6bfd3', // azul (padrão)
-        '#c9a0a0', // vinho
-        '#a8c4a2', // verde sálvia
-        '#b9a7d1', // lavanda
-        '#e0cba8', // bege
-        '#d1a79e', // terracota
-        '#8d8d8d', // cinza
+        '#7a342f', // vinho
+        '#84a87b', // verde sálvia
+        '#9d87b9', // lavanda
+        '#bb8e41', // Amarelo
+        '#d49f8f', // terracota
+        '#898a8f', // cinza
     ];
 
     private buildColorOptions(): void {
