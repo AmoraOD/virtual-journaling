@@ -5,7 +5,6 @@
 
 
 /* PRINCIPALS */
-/* .principal-bg{ background-color: #5c2b1c; } */
 .principal-bg{
     background-color: #f5e7d6;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,10 +15,29 @@
     margin: 0;
 }
 
+.journal-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
 .container-journal{
     width: 600px; height: 500px;
     perspective: 1000px;
     position: relative;
+}
+
+.config-journal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.page-navigation{
+    display: flex;
+    gap: 0.5rem;
+    margin: 1rem;
 }
 
 /* BUTTONS */
@@ -34,14 +52,9 @@
 
 #back-to-cover:hover { background: #2c4db9; }
 
-.page-navigation{
-    display: flex;
-    gap: 0.5rem;
-    margin: 1rem;
-}
-
 .color-options {
     display: flex;
+    flex-direction: column;
     gap: 0.5rem;
     padding: 0.5rem;
     margin-left: 0.5rem;
