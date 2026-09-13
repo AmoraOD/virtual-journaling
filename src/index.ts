@@ -94,8 +94,10 @@ class VirtualJournal{
         page.className = 'page';
 
         const content = document.createElement('div');
+        
         content.className = 'page-content';
         content.contentEditable = 'true';
+        
         page.appendChild(content);
 
         return page;
@@ -145,14 +147,17 @@ class VirtualJournal{
     private buildColorOptions(): void {
     this.coverColors.forEach((color) => {
         const swatch = document.createElement('button');
+
         swatch.className = 'swatch';
         swatch.style.backgroundColor = color;
+
         swatch.setAttribute('aria-label', `Cor ${color}`);
         swatch.addEventListener('click', (e) => {
-            e.stopPropagation(); // evita propagar pra outros listeners
+            e.stopPropagation();
             this.applyCoverColor(color);
             this.colorOptions.classList.add('hidden');
         });
+
         this.colorOptions.appendChild(swatch);
     });
 }
@@ -162,9 +167,7 @@ class VirtualJournal{
     }
 
     private applyCoverColor(hex: string): void {
-        // Tom mais claro para o topo do gradiente
         const lighter = this.shade(hex, 0.15);
-        // Tom mais escuro para o texto
         const darker = this.shade(hex, -0.45);
 
         this.cover.style.setProperty('--cover-light', lighter);
@@ -185,6 +188,7 @@ class VirtualJournal{
             const v = Math.round(
                 channel + (percent < 0 ? channel * percent : (255 - channel) * percent)
             );
+            
             return Math.max(0, Math.min(255, v));
         };
 
