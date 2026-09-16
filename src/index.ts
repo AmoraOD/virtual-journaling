@@ -58,6 +58,13 @@ class VirtualJournal{
 
         this.changeColorButton.addEventListener('click', () => this.toggleColorOptions());
 
+        document.addEventListener('click', (e) => {
+            const target = e.target as HTMLElement;
+            if (!target.closest('.config-journal')) {
+                this.colorOptions.classList.add('hidden');
+            }
+        });
+
         this.addPage(false);
         this.showPage(0);
         this.buildColorOptions();
