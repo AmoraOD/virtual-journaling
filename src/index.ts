@@ -16,6 +16,7 @@ class VirtualJournal{
     private pageIndicator: HTMLElement;
     private state: journal_state;
     private pagesElements: HTMLElement[] = [];
+    private isFlipping: boolean = false;
 
     private changeColorButton: HTMLElement;
     private colorOptions: HTMLElement;
@@ -77,16 +78,28 @@ class VirtualJournal{
 
         this.pages.classList.remove('hidden');
         this.backButton.classList.remove('hidden');
+
+        // Só sobe as páginas acima da capa DEPOIS da capa terminar de girar.
+        const onOpened = (event: TransitionEvent) => {
+            if (event.propertyName !== 'transform') return;
+            this.cover.removeEventListener('transitionend', onOpened);
+            this.pages.classList.add('above-cover');
+        };
+        this.cover.addEventListener('transitionend', onOpened);
     }
 
     private closeJournal(): void {
         if (!this.state.isOpen) return;
         this.state.isOpen = false;
 
+        // Antes de fechar, devolve as páginas para trás da capa,
+        // senão elas ficariam visíveis por cima dela durante o fechamento.
+        this.pages.classList.remove('above-cover');
+
         this.cover.classList.remove('opened');
         this.backButton.classList.add('hidden');
 
-        const handleCoverClose = (event : TransitionEvent) => {
+        const handleCoverClose = (event: TransitionEvent) => {
             if (event.propertyName !== 'transform') return;
 
             this.cover.removeEventListener('transitionend', handleCoverClose);
@@ -124,6 +137,7 @@ class VirtualJournal{
 
         this.pagesElements.forEach((page, i) => {
             page.style.display = (i === index) ? 'flex' : 'none';
+            page.style.zIndex = '';
         });
 
         this.pageIndicator.textContent = `${index + 1}`;
@@ -131,14 +145,59 @@ class VirtualJournal{
 
     private nextPage(): void{
         if (this.state.currentPage < this.pagesElements.length - 1) {
-            this.showPage(this.state.currentPage + 1);
+            // this.showPage(this.state.currentPage + 1);
+            this.flipPage(this.state.currentPage + 1, 'forward');
         }
     }
 
     private prevPage(): void{
         if (this.state.currentPage > 0) {
-            this.showPage(this.state.currentPage - 1);
+            // this.showPage(this.state.currentPage - 1);
+            this.flipPage(this.state.currentPage - 1, 'backward');
         }
+    }
+
+    private flipPage(newIndex: number, direction: 'forward' | 'backward'): void{
+        if (this.isFlipping) return;
+        if(newIndex < 0 || newIndex > this.pagesElements.length) return;
+
+        const oldPage = this.pagesElements[this.state.currentPage];
+        const newPage = this.pagesElements[newIndex];
+        if(!oldPage || !newPage) return;
+
+        this.isFlipping = true;
+
+        newPage.style.display = 'flex';
+
+        if (direction = 'forward') {
+            oldPage.style.zIndex = '2';
+            newPage.style.zIndex = '1';
+            oldPage.classList.add('flip-forward');
+
+            oldPage.addEventListener('animationend', () => {
+                oldPage.classList.remove('flip-forward');
+                oldPage.style.display = 'none';
+                oldPage.style.zIndex = '';
+                newPage.style.zIndex = '';
+                this.isFlipping = false;
+            }, { once:true });
+        }
+        else {
+            newPage.style.zIndex = '2';
+            oldPage.style.zIndex = '1';
+            newPage.classList.add('flip-backward');
+
+            newPage.addEventListener('animationend', () => {
+                newPage.classList.remove('flip-backward');
+                oldPage.style.display = 'none';
+                oldPage.style.zIndex = '';
+                newPage.style.zIndex = '';
+                this.isFlipping = false;
+            }, { once: true });
+        }
+
+        this.state.currentPage = newIndex;
+        this.pageIndicator.textContent = `${newIndex + 1}`;
     }
 
     private readonly coverColors: string[] = [
