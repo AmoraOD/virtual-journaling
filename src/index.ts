@@ -159,42 +159,46 @@ class VirtualJournal{
 
     private flipPage(newIndex: number, direction: 'forward' | 'backward'): void{
         if (this.isFlipping) return;
-        if(newIndex < 0 || newIndex > this.pagesElements.length) return;
+        if (newIndex < 0 || newIndex >= this.pagesElements.length) return;
 
         const oldPage = this.pagesElements[this.state.currentPage];
         const newPage = this.pagesElements[newIndex];
-        if(!oldPage || !newPage) return;
+        if (!oldPage || !newPage) return;
 
         this.isFlipping = true;
 
-        newPage.style.display = 'flex';
+        // Folha temporária que vai girar cobrindo o papel inteiro
+        const sheet = document.createElement('div');
+        sheet.className = 'flip-sheet';
 
-        if (direction = 'forward') {
-            oldPage.style.zIndex = '2';
-            newPage.style.zIndex = '1';
-            oldPage.classList.add('flip-forward');
+        const content = document.createElement('div');
+        content.className = 'flip-sheet-content';
 
-            oldPage.addEventListener('animationend', () => {
-                oldPage.classList.remove('flip-forward');
-                oldPage.style.display = 'none';
-                oldPage.style.zIndex = '';
-                newPage.style.zIndex = '';
-                this.isFlipping = false;
-            }, { once:true });
+        if (direction === 'forward') {
+            // A folha é a página ANTIGA saindo: mostra o conteúdo antigo
+            content.innerHTML = oldPage.innerHTML;
+            sheet.classList.add('flip-forward');
+
+            oldPage.style.display = 'none';
+            newPage.style.display = 'flex';   // nova página já aparece por baixo
+        } else {
+            // A folha é a página NOVA chegando: mostra o conteúdo novo
+            content.innerHTML = newPage.innerHTML;
+            sheet.classList.add('flip-backward');
+
+            oldPage.style.display = 'flex';   // antiga fica embaixo
+            newPage.style.display = 'none';   // será revelada no fim
         }
-        else {
-            newPage.style.zIndex = '2';
-            oldPage.style.zIndex = '1';
-            newPage.classList.add('flip-backward');
 
-            newPage.addEventListener('animationend', () => {
-                newPage.classList.remove('flip-backward');
-                oldPage.style.display = 'none';
-                oldPage.style.zIndex = '';
-                newPage.style.zIndex = '';
-                this.isFlipping = false;
-            }, { once: true });
-        }
+        sheet.appendChild(content);
+        this.pages.appendChild(sheet);
+
+        sheet.addEventListener('animationend', () => {
+            sheet.remove();
+            oldPage.style.display = 'none';
+            newPage.style.display = 'flex';
+            this.isFlipping = false;
+        }, { once: true });
 
         this.state.currentPage = newIndex;
         this.pageIndicator.textContent = `${newIndex + 1}`;
@@ -206,8 +210,9 @@ class VirtualJournal{
         '#84a87b', // verde sálvia
         '#9d87b9', // lavanda
         '#bb8e41', // Amarelo
-        '#d49f8f', // terracota
+        '#b9754d', // terracota
         '#898a8f', // cinza
+        '#171324', // preto
     ];
 
     private buildColorOptions(): void {
