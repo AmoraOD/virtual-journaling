@@ -216,22 +216,22 @@ class VirtualJournal{
     ];
 
     private buildColorOptions(): void {
-    this.coverColors.forEach((color) => {
-        const swatch = document.createElement('button');
+        this.coverColors.forEach((color) => {
+            const swatch = document.createElement('button');
 
-        swatch.className = 'swatch';
-        swatch.style.backgroundColor = color;
+            swatch.className = 'swatch';
+            swatch.style.backgroundColor = color;
 
-        swatch.setAttribute('aria-label', `Cor ${color}`);
-        swatch.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.applyCoverColor(color);
-            this.colorOptions.classList.add('hidden');
+            swatch.setAttribute('aria-label', `Cor ${color}`);
+            swatch.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.applyCoverColor(color);
+                this.colorOptions.classList.add('hidden');
+            });
+
+            this.colorOptions.appendChild(swatch);
         });
-
-        this.colorOptions.appendChild(swatch);
-    });
-}
+    }
 
     private toggleColorOptions(): void {
         this.colorOptions.classList.toggle('hidden');
