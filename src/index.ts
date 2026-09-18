@@ -1,3 +1,5 @@
+import ModalBox from "./ts/modal";
+
 interface journal_state {
     isOpen:boolean;
     currentPage: number;
