@@ -1,5 +1,3 @@
-import ModalBox from "./ts/modal";
-
 interface journal_state {
     isOpen:boolean;
     currentPage: number;
@@ -81,7 +79,6 @@ class VirtualJournal{
         this.pages.classList.remove('hidden');
         this.backButton.classList.remove('hidden');
 
-        // Só sobe as páginas acima da capa DEPOIS da capa terminar de girar.
         const onOpened = (event: TransitionEvent) => {
             if (event.propertyName !== 'transform') return;
             this.cover.removeEventListener('transitionend', onOpened);
@@ -250,7 +247,7 @@ class VirtualJournal{
 
     /**
      * Clareia (percent > 0) ou escurece (percent < 0) uma cor hex.
-     * @param hex  Cor no formato "#rrggbb"
+     * @param hex
      * @param percent  Ex.: -0.4 = 40% mais escuro; 0.15 = 15% mais claro
      */
     private shade(hex: string, percent: number): string {
